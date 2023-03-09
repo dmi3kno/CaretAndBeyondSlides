@@ -1,0 +1,452 @@
+---
+title: "`{caret}` and beyond"
+subtitle: "Statistical learning at scale"
+author: Dmytro Perepolkin
+institute: Lund University
+title-slide-attributes:
+  data-background-image: "img/carrot_33570.png"
+  data-background-size: contain
+  data-background-opacity: "0.5"
+execute: 
+  echo: true
+  freeze: true
+  cache: true
+format: 
+  revealjs:
+    smaller: true
+    theme: blood
+---
+
+## History
+
+```{r}
+#| label: setup
+#| echo: false
+#| message: false
+#| warning: false
+#| cache: false
+library(tidyverse)
+library(kableExtra)
+library(caret)
+library(parsnip)
+theme_set(theme_minimal())
+```
+
+{caret} (**C**lassification **A**nd **Re**gression **T**raining) created by Max Kuhn at Pfizer (Git: Jun-2005, CRAN: Oct-2007) primarily to simplify analysis of clinical trial data. 
+
+Motivated by inconsistency in R package interfaces: formula interface, `x,y` interface or both? Default arguments?
+
+```{r}
+#| label: tbl-packages-syntax
+#| echo: false
+#| tbl-cap: "Interface for getting probability estimates from several classification models"
+tibble::tribble(
+  ~obj, ~package, ~predict,
+  "lda", "MASS", "predict(obj)",
+  "glm", "stats", "predict(obj, type='response')",
+  "gbm", "gbm",   "predict(obj, type='response', n.trees)",
+  "mda", "mda",   "predict(obj, type='posterior')",
+  "rpart", "rpart", "predict(obj, type='prob')",
+  "Weka", "RWeka",  "predict(obj, type='probability')",
+  "LogitBoost", "caTools", "predict(obj, type='raw', nIter)"
+) %>% kableExtra::kbl()
+```
+
+## {background-image="img/E-P5vPtXEA0MBYS.jpeg" background-size=contain}
+
+## Main features {page-layout="full"}
+
+`{caret}` was conceived to:
+
+- unify *interfaces* to models (wrapper)
+- provide toolkit for *tuning* and resampling (CV)
+- pre-processing *helper* functions
+- one of the first *parallel processing* implementations
+
+Some visualization for EDA (based on `lattice`), unified interfaces for variable importance, measuring performance. Lots of feature selection methods.
+
+We will be looking at some of the features using `Boston`
+
+```{r}
+boston <- MASS::Boston
+```
+
+## Models
+
+Today (2023-03-08) `{caret}` has wrappers for `r length(names(getModelInfo()))` models
+
+```{r}
+options(width=120)
+getModelInfo() %>% names()
+```
+
+## Getting started
+
+### EDA
+
+"Index"-returning functions to subset columns.
+
+```{r}
+nzv <- nearZeroVar(boston)
+if (length(nzv)>0) boston <- boston[,-nzv]
+
+hco <- findCorrelation(cor(boston), cutoff = .9)
+if (length(hco)>0) boston <- boston[,-hco]
+
+lco <- findLinearCombos(boston)
+if (length(lco$remove)>0) boston <- boston[,-lco$remove]
+```
+
+### Partitioning
+
+Creates *stratified* split (balanced classes/quantiles across partitions). 
+
+```{r}
+set.seed(42)
+train_idx <- createDataPartition(boston$medv, p=0.7, list = FALSE)
+boston_train <- boston[train_idx,]
+boston_test <- boston[-train_idx,]
+```
+
+Also: `createFolds`, `createMultiFolds`, `createResamples`, `createTimeSlices`
+
+## Preprocessing
+
+Pre-processing creates a *recipe* for data manipulation, but does not apply the operations (until you call `predict()`). 
+
+```{r}
+preproc_steps <- preProcess(boston_train, method=c("scale", "center"))
+preproc_steps
+boston_proc_train <- predict(preproc_steps, boston_train)
+boston_proc_test <- predict(preproc_steps, boston_test)
+```
+
+Can also perform imputation (e.g. `knnImpute`, `bagImpute`), as well as `pca`/`ica`, `nzv` and non-linear transforms `BoxCox`, `YeoJohnson`, etc.
+
+Why you should not `preProcess(boston, ...)`?
+
+## Train {background-image="img/mireo-plus-b.png" background-size="200px" background-position="top 10px right 10px"}
+
+```{r}
+set.seed(42)
+tc <- trainControl(method = "repeatedcv", 
+                   number = 10, repeats = 10)
+gbm_fit <- train(medv ~ ., data = boston_proc_train, 
+                 method = "gbm", trControl = tc, verbose=FALSE)
+gbm_fit
+```
+
+`trainControl()` is the main workhorse for cross-validation (and tuning). It creates grids for you and performs adaptive search to minimize the computational cost.
+
+## Tuning
+
+You can manually perform the tuning of hyperparameters overriding the default grids `trainControl()` creates for you.
+
+```{r}
+#| code-line-numbers: "1-4,8"
+gbm_grid <-  expand.grid(interaction.depth = c(1, 5, 9), 
+                        n.trees = (1:3)*50, 
+                        shrinkage = c(0.1, 0.2, 0.3),
+                        n.minobsinnode = c(10,20))
+nrow(gbm_grid)
+gbm_fit_tuned <- train(medv ~ ., data = boston_proc_train, 
+                 method = "gbm", trControl = tc, verbose=FALSE, 
+                 tuneGrid=gbm_grid)
+gbm_fit_tuned
+```
+## Visualization
+
+Most objects are visualizable.
+
+```{r}
+plot(gbm_fit_tuned)
+```
+
+
+## Visualization
+
+Also in `ggplot`
+
+```{r}
+ggplot(gbm_fit_tuned)
+```
+
+## Occam's razor
+
+Tuning produces many alternative models. The best model is probably on plateau, and we could try to find a simpler model which is "about as good". This will find the simplest model within 3 pct of the best one.
+
+```{r}
+also_good_mod <- tolerance(gbm_fit_tuned$results, metric="RMSE",
+                       tol=3, maximize = FALSE)
+gbm_fit_tuned$results[which.min(gbm_fit_tuned$results$RMSE),]
+gbm_fit_tuned$results[also_good_mod,]
+```
+
+You can, of course, identify this visually (using some sort of elbow plot).
+
+## Multiple models
+
+Switching models has never been easier
+
+```{r}
+svm_fit <- train(medv ~ ., data = boston_proc_train, 
+                 method = "svmRadial", trControl = tc, verbose=FALSE)
+rf_fit <- train(medv ~ ., data = boston_proc_train, 
+                 method = "rf", trControl = tc, verbose=FALSE)
+```
+
+Each algorithm would require a customized grid, but thankfully, `trainControl()` will do some tuning for you (3 values for each tunable parameter).
+
+```{r}
+res <- resamples(list(GBM = gbm_fit,
+                      SVM = svm_fit,
+                      RF = rf_fit))
+summary(res)
+```
+
+## Variable importance
+
+Variable importance mean different things for different algorithms. `caret` has unified interface for variable importance
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+varImp(rf_fit)
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+varImp(svm_fit)
+```
+:::
+
+::::
+
+## Prediction
+
+Prediction is also easy. Select a model and call
+
+```{r}
+rf_preds <- predict(rf_fit, newdata=boston_proc_test)
+svm_preds <- predict(svm_fit, newdata=boston_proc_test)
+```
+
+Performance measurement varies between regression and classification. Wide selection of custom metrics are available (and you can add your own).
+
+```{r}
+postResample(pred = rf_preds, obs = boston_proc_test$medv)
+postResample(pred = svm_preds, obs = boston_proc_test$medv)
+```
+
+## Classification example
+
+Let's predict whether the house is located on Charles river. 
+
+```{r}
+set.seed(42)
+boston$chas <- factor(boston$chas, levels=c(0,1), labels=c("NotRiverside", "Riverside"))
+ctrain_idx <- createDataPartition(boston$chas, p=0.7, list = FALSE)
+boston_ctrain <- boston[ctrain_idx,]
+boston_ctest <- boston[-ctrain_idx,]
+```
+
+We need to do something about class imbalance. 
+
+```{r}
+table(boston$chas) %>% prop.table()
+```
+
+This means that we can expect our classifier to be at least this good by predicting no riverside houses.
+
+:::{.callout-caution}
+Class imbalance is one of the first thing you want to look at because it will influence how you want to look at the results and how you want to preprocess your data.
+:::
+
+## Train with preprocessing
+
+We create a trainControl which is slightly customized for classification
+
+```{r}
+set.seed(42)
+ctr <- trainControl(method="repeatedcv", repeats=5,
+                    summaryFunction = twoClassSummary,
+                    classProbs = TRUE)
+cfit_rf <- train(chas ~ ., data = boston_ctrain, 
+                preProcess=c("scale", "center"), metric="ROC",
+                method = "rf", trControl = ctr, verbose=FALSE)
+```
+
+We can downsample the dominant class (non-riverside housing) and refit the model (setting `sampling="down"`) or upsample the minority class (`sampling="up"`) or do some combination of the two (`smote` or `rose`). But at the end of the day the problem is unlikely to go away. 
+
+```{r}
+ctr$sampling <- "down"
+cfit_rf_down <- train(chas ~ ., data = boston_ctrain, 
+                preProcess=c("scale", "center"), metric="ROC",
+                method = "rf", trControl = ctr, verbose=FALSE)
+ctr$sampling <- "rose"
+cfit_rf_rose <- train(chas ~ ., data = boston_ctrain, 
+                preProcess=c("scale", "center"), metric="ROC",
+                method = "rf", trControl = ctr, verbose=FALSE)
+```
+
+## Class imbalance
+
+```{r}
+cfit_rf_models <- resamples(list(
+  original=cfit_rf,
+  down=cfit_rf_down,
+  rose=cfit_rf_rose))
+summary(cfit_rf_models)
+```
+
+## Class imbalance
+
+Does it even mean anything?
+
+```{r}
+preds_rf <- predict(cfit_rf, newdata=boston_ctest)
+confusionMatrix(data=preds_rf, reference=boston_ctest$chas)
+```
+
+## Class imbalance
+
+```{r}
+probs_rf <- predict(cfit_rf, newdata=boston_ctest, type="prob")
+pROC::roc(boston_ctest$chas,probs_rf$Riverside, levels=levels(boston_ctest$chas)) 
+probs_rf_down <- predict(cfit_rf_down, newdata=boston_ctest, type="prob")
+pROC::roc(boston_ctest$chas,probs_rf_down$Riverside, levels=levels(boston_ctest$chas))
+probs_rf_rose <- predict(cfit_rf_rose, newdata=boston_ctest, type="prob")
+pROC::roc(boston_ctest$chas,probs_rf_rose$Riverside, levels=levels(boston_ctest$chas))
+```
+
+## Class imbalance
+
+```{r}
+rf_roc <- pROC::roc(boston_ctest$chas,probs_rf$Riverside, levels=levels(boston_ctest$chas))
+best_th <- pROC::coords(rf_roc, "best")$threshold
+plot(rf_roc, 
+     print.thres=c(0.5, best_th))
+```
+
+## Class imbalance
+
+```{r}
+rf_roc_rose <- pROC::roc(boston_ctest$chas,probs_rf_rose$Riverside, levels=levels(boston_ctest$chas))
+list("RF"=rf_roc, "ROSE"=rf_roc_rose) %>% pROC::ggroc()
+```
+
+## More models
+
+A ton of available models. Documentation at `{caret}` [website](https://topepo.github.io/caret/available-models.html). Models are organized by task and clustered by tag.
+
+Switching the model is as easy as swapping `method="__"` in `train()` (unless you do manual grid search).  A lot can be done with model combination (stacking), but you want to be careful with folding to avoid leakage. `{caret}` allows you to craft the CV indices manually.
+
+### Way forward
+
+- Multiple models has been first introduced in R4DS ("R for Data Science") book. Neat idea based on list-columns and extensive use of `purrr::map()` to iterate over them. `{modelr}` package by Hadley. 
+- Max Kuhn was leaving Pfizer and the future of `caret` was dim. Rstudio snapped him to continue working on streamlining modeling interfaces in R.
+
+## Beyond {caret}
+
+- First project was `rsample` which created a new type of data structure for repeated sampling - a list-column of indices (sort of unevaluated pointers to future data). "Conscious decoupling". Caret is too big.
+- Then came 
+   - `recipes` - further development of unevaluated promises for pre-processing
+   - `parsnip` - rethinking of `caret` for tidyverse
+   - `dials` - tuning functions
+   - `yardstick` - helper functions for measuring performance
+   - `baguette` - generalized framework for bagging
+   - `stacks` - generalized framework for stacking
+   - `workflow` - ML workflow automation (inspired by sci-kit learn).
+
+More details in the new book [Tidy Modeling with R](https://www.tmwr.org/) by Max Kuhn and Julia Silge
+
+## Tidymodels
+
+```{r}
+#| message: true
+library(tidymodels) #meta-package
+
+set.seed(42)
+bh_split <- initial_split(boston, prop=0.7, strata="medv")
+bh_recipe <- training(bh_split) %>% 
+  recipe(medv~.) %>% 
+  step_dummy(chas) %>% 
+  step_corr(all_predictors()) %>% 
+  step_nzv(all_predictors())
+bh_recipe %>% prep()
+```
+## Tidymodels
+
+```{r}
+bh_lm <- linear_reg(mode = "regression") %>%
+  set_engine("lm")
+
+bh_lm_wf <- workflow() %>%
+  add_recipe(bh_recipe) %>%
+  add_model(bh_lm)
+
+bh_rt <- decision_tree(mode = "regression") %>%
+  set_engine("rpart")
+
+bh_rt_wf <- workflow() %>%
+  add_recipe(bh_recipe) %>%
+  add_model(bh_rt)
+
+set.seed(42)
+bh_folds <- vfold_cv(training(bh_split), strata = "medv", v = 3, repeats = 3)
+metrics_regression <- metric_set(rmse, mae, rsq)
+```
+
+## Tidymodels
+
+```{r}
+set.seed(42)
+lm_fit <- fit_resamples(bh_lm_wf, bh_folds, metrics = metrics_regression) %>%
+  collect_metrics() %>%
+  mutate(model = "lm")
+
+set.seed(42)
+rt_fit <- fit_resamples(bh_rt_wf, bh_folds, metrics = metrics_regression) %>%
+  collect_metrics() %>%
+  mutate(model = "rt")
+```
+
+
+```{r}
+#| output-location: column
+bind_rows(lm_fit, rt_fit) %>%
+  select(.metric, mean, std_err, model) %>%
+  ggplot(aes(x = model, y = mean, 
+             ymin = mean - 1.96*std_err, 
+             ymax = mean + 1.96*std_err)) +
+  geom_pointrange() + 
+  labs(y = "confidence interval") +
+  facet_grid(. ~ .metric)
+```
+
+## Tidymodels
+
+```{r}
+fitted_model <- bh_lm_wf %>%
+  fit(training(bh_split))
+predict_test <- fitted_model %>%
+  predict(testing(bh_split)) %>%
+  bind_cols(testing(bh_split)) 
+
+predict_test %>%
+  metrics_regression(truth = medv, estimate = .pred)
+```
+
+
+```{r}
+#| output-location: column
+bind_rows(predict_test) %>%
+  ggplot(aes(medv, .pred)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, 
+        size = 0.3, linetype = "dashed") 
+```
+
+# Thank you!

@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="CaretAndBeyondSlides_files/libs/clipboard/clipboard.min.js"></script>
+<script src="CaretAndBeyondSlides_files/libs/quarto-html/tabby.min.js"></script>
+<script src="CaretAndBeyondSlides_files/libs/quarto-html/popper.min.js"></script>
+<script src="CaretAndBeyondSlides_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="CaretAndBeyondSlides_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="CaretAndBeyondSlides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="CaretAndBeyondSlides_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-99.9.9">
+
+  <meta name="author" content="Dmytro Perepolkin">
+  <title>{caret} and beyond</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="CaretAndBeyondSlides_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="CaretAndBeyondSlides_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: 1;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="CaretAndBeyondSlides_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="CaretAndBeyondSlides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="CaretAndBeyondSlides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="CaretAndBeyondSlides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="CaretAndBeyondSlides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  
+  <script src="CaretAndBeyondSlides_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="CaretAndBeyondSlides_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="img/carrot_33570.png" data-background-opacity="0.5" data-background-size="contain" class="center">
+  <h1 class="title"><code>{caret}</code> and beyond</h1>
+  <p class="subtitle">Statistical learning at scale</p>
+  <p class="author">Dmytro Perepolkin</p>
+  <p class="institute">Lund University</p>
+</section>
+
+<section id="history" class="slide level2">
+<h2>History</h2>
+<div class="cell">
+
+</div>
+<p>{caret} (<strong>C</strong>lassification <strong>A</strong>nd <strong>Re</strong>gression <strong>T</strong>raining) created by Max Kuhn at Pfizer (Git: Jun-2005, CRAN: Oct-2007) primarily to simplify analysis of clinical trial data.</p>
+<p>Motivated by inconsistency in R package interfaces: formula interface, <code>x,y</code> interface or both? Default arguments?</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/tbl-packages-syntax_0b338e6ded137be63d3b0ebda3cce470">
+<div class="cell-output-display">
+<div id="tbl-packages-syntax">
+
+<table><caption>Table 1:  Interface for getting probability estimates from several classification models </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> obj </th>
+   <th style="text-align:left;"> package </th>
+   <th style="text-align:left;"> predict </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> lda </td>
+   <td style="text-align:left;"> MASS </td>
+   <td style="text-align:left;"> predict(obj) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glm </td>
+   <td style="text-align:left;"> stats </td>
+   <td style="text-align:left;"> predict(obj, type='response') </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> gbm </td>
+   <td style="text-align:left;"> gbm </td>
+   <td style="text-align:left;"> predict(obj, type='response', n.trees) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> mda </td>
+   <td style="text-align:left;"> mda </td>
+   <td style="text-align:left;"> predict(obj, type='posterior') </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> rpart </td>
+   <td style="text-align:left;"> rpart </td>
+   <td style="text-align:left;"> predict(obj, type='prob') </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Weka </td>
+   <td style="text-align:left;"> RWeka </td>
+   <td style="text-align:left;"> predict(obj, type='probability') </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LogitBoost </td>
+   <td style="text-align:left;"> caTools </td>
+   <td style="text-align:left;"> predict(obj, type='raw', nIter) </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="section" class="slide level2" data-background-image="img/E-P5vPtXEA0MBYS.jpeg" data-background-size="contain">
+<h2></h2>
+</section>
+<section id="main-features" class="slide level2" data-page-layout="full">
+<h2>Main features</h2>
+<p><code>{caret}</code> was conceived to:</p>
+<ul>
+<li>unify <em>interfaces</em> to models (wrapper)</li>
+<li>provide toolkit for <em>tuning</em> and resampling (CV)</li>
+<li>pre-processing <em>helper</em> functions</li>
+<li>one of the first <em>parallel processing</em> implementations</li>
+</ul>
+<p>Some visualization for EDA (based on <code>lattice</code>), unified interfaces for variable importance, measuring performance. Lots of feature selection methods.</p>
+<p>We will be looking at some of the features using <code>Boston</code></p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-3_c92b60a067740e98c60d0d096e5e73cb">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>boston <span class="ot">&lt;-</span> MASS<span class="sc">::</span>Boston</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="models" class="slide level2">
+<h2>Models</h2>
+<p>Today (2023-03-08) <code>{caret}</code> has wrappers for 239 models</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-4_199e8650d5ebc59a2a75902ac29100e2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">options</span>(<span class="at">width=</span><span class="dv">120</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">getModelInfo</span>() <span class="sc">%&gt;%</span> <span class="fu">names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "ada"                 "AdaBag"              "AdaBoost.M1"         "adaboost"            "amdai"              
+  [6] "ANFIS"               "avNNet"              "awnb"                "awtan"               "bag"                
+ [11] "bagEarth"            "bagEarthGCV"         "bagFDA"              "bagFDAGCV"           "bam"                
+ [16] "bartMachine"         "bayesglm"            "binda"               "blackboost"          "blasso"             
+ [21] "blassoAveraged"      "bridge"              "brnn"                "BstLm"               "bstSm"              
+ [26] "bstTree"             "C5.0"                "C5.0Cost"            "C5.0Rules"           "C5.0Tree"           
+ [31] "cforest"             "chaid"               "CSimca"              "ctree"               "ctree2"             
+ [36] "cubist"              "dda"                 "deepboost"           "DENFIS"              "dnn"                
+ [41] "dwdLinear"           "dwdPoly"             "dwdRadial"           "earth"               "elm"                
+ [46] "enet"                "evtree"              "extraTrees"          "fda"                 "FH.GBML"            
+ [51] "FIR.DM"              "foba"                "FRBCS.CHI"           "FRBCS.W"             "FS.HGD"             
+ [56] "gam"                 "gamboost"            "gamLoess"            "gamSpline"           "gaussprLinear"      
+ [61] "gaussprPoly"         "gaussprRadial"       "gbm_h2o"             "gbm"                 "gcvEarth"           
+ [66] "GFS.FR.MOGUL"        "GFS.LT.RS"           "GFS.THRIFT"          "glm.nb"              "glm"                
+ [71] "glmboost"            "glmnet_h2o"          "glmnet"              "glmStepAIC"          "gpls"               
+ [76] "hda"                 "hdda"                "hdrda"               "HYFIS"               "icr"                
+ [81] "J48"                 "JRip"                "kernelpls"           "kknn"                "knn"                
+ [86] "krlsPoly"            "krlsRadial"          "lars"                "lars2"               "lasso"              
+ [91] "lda"                 "lda2"                "leapBackward"        "leapForward"         "leapSeq"            
+ [96] "Linda"               "lm"                  "lmStepAIC"           "LMT"                 "loclda"             
+[101] "logicBag"            "LogitBoost"          "logreg"              "lssvmLinear"         "lssvmPoly"          
+[106] "lssvmRadial"         "lvq"                 "M5"                  "M5Rules"             "manb"               
+[111] "mda"                 "Mlda"                "mlp"                 "mlpKerasDecay"       "mlpKerasDecayCost"  
+[116] "mlpKerasDropout"     "mlpKerasDropoutCost" "mlpML"               "mlpSGD"              "mlpWeightDecay"     
+[121] "mlpWeightDecayML"    "monmlp"              "msaenet"             "multinom"            "mxnet"              
+[126] "mxnetAdam"           "naive_bayes"         "nb"                  "nbDiscrete"          "nbSearch"           
+[131] "neuralnet"           "nnet"                "nnls"                "nodeHarvest"         "null"               
+[136] "OneR"                "ordinalNet"          "ordinalRF"           "ORFlog"              "ORFpls"             
+[141] "ORFridge"            "ORFsvm"              "ownn"                "pam"                 "parRF"              
+[146] "PART"                "partDSA"             "pcaNNet"             "pcr"                 "pda"                
+[151] "pda2"                "penalized"           "PenalizedLDA"        "plr"                 "pls"                
+[156] "plsRglm"             "polr"                "ppr"                 "pre"                 "PRIM"               
+[161] "protoclass"          "qda"                 "QdaCov"              "qrf"                 "qrnn"               
+[166] "randomGLM"           "ranger"              "rbf"                 "rbfDDA"              "Rborist"            
+[171] "rda"                 "regLogistic"         "relaxo"              "rf"                  "rFerns"             
+[176] "RFlda"               "rfRules"             "ridge"               "rlda"                "rlm"                
+[181] "rmda"                "rocc"                "rotationForest"      "rotationForestCp"    "rpart"              
+[186] "rpart1SE"            "rpart2"              "rpartCost"           "rpartScore"          "rqlasso"            
+[191] "rqnc"                "RRF"                 "RRFglobal"           "rrlda"               "RSimca"             
+[196] "rvmLinear"           "rvmPoly"             "rvmRadial"           "SBC"                 "sda"                
+[201] "sdwd"                "simpls"              "SLAVE"               "slda"                "smda"               
+[206] "snn"                 "sparseLDA"           "spikeslab"           "spls"                "stepLDA"            
+[211] "stepQDA"             "superpc"             "svmBoundrangeString" "svmExpoString"       "svmLinear"          
+[216] "svmLinear2"          "svmLinear3"          "svmLinearWeights"    "svmLinearWeights2"   "svmPoly"            
+[221] "svmRadial"           "svmRadialCost"       "svmRadialSigma"      "svmRadialWeights"    "svmSpectrumString"  
+[226] "tan"                 "tanSearch"           "treebag"             "vbmpRadial"          "vglmAdjCat"         
+[231] "vglmContRatio"       "vglmCumulative"      "widekernelpls"       "WM"                  "wsrf"               
+[236] "xgbDART"             "xgbLinear"           "xgbTree"             "xyf"                </code></pre>
+</div>
+</div>
+</section>
+<section id="getting-started" class="slide level2">
+<h2>Getting started</h2>
+<h3 id="eda">EDA</h3>
+<p>“Index”-returning functions to subset columns.</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-5_403d56d956dd3b476ea1dd129b47e45b">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>nzv <span class="ot">&lt;-</span> <span class="fu">nearZeroVar</span>(boston)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="cf">if</span> (<span class="fu">length</span>(nzv)<span class="sc">&gt;</span><span class="dv">0</span>) boston <span class="ot">&lt;-</span> boston[,<span class="sc">-</span>nzv]</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>hco <span class="ot">&lt;-</span> <span class="fu">findCorrelation</span>(<span class="fu">cor</span>(boston), <span class="at">cutoff =</span> .<span class="dv">9</span>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="cf">if</span> (<span class="fu">length</span>(hco)<span class="sc">&gt;</span><span class="dv">0</span>) boston <span class="ot">&lt;-</span> boston[,<span class="sc">-</span>hco]</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a>lco <span class="ot">&lt;-</span> <span class="fu">findLinearCombos</span>(boston)</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="cf">if</span> (<span class="fu">length</span>(lco<span class="sc">$</span>remove)<span class="sc">&gt;</span><span class="dv">0</span>) boston <span class="ot">&lt;-</span> boston[,<span class="sc">-</span>lco<span class="sc">$</span>remove]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<h3 id="partitioning">Partitioning</h3>
+<p>Creates <em>stratified</em> split (balanced classes/quantiles across partitions).</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-6_e44dd3f818d9471dd9bf01b5a789096f">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>train_idx <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(boston<span class="sc">$</span>medv, <span class="at">p=</span><span class="fl">0.7</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>boston_train <span class="ot">&lt;-</span> boston[train_idx,]</span>
+<span id="cb5-4"><a href="#cb5-4"></a>boston_test <span class="ot">&lt;-</span> boston[<span class="sc">-</span>train_idx,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Also: <code>createFolds</code>, <code>createMultiFolds</code>, <code>createResamples</code>, <code>createTimeSlices</code></p>
+</section>
+<section id="preprocessing" class="slide level2">
+<h2>Preprocessing</h2>
+<p>Pre-processing creates a <em>recipe</em> for data manipulation, but does not apply the operations (until you call <code>predict()</code>).</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-7_e66ada3d753ddf763bc70131c387c6c2">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>preproc_steps <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(boston_train, <span class="at">method=</span><span class="fu">c</span>(<span class="st">"scale"</span>, <span class="st">"center"</span>))</span>
+<span id="cb6-2"><a href="#cb6-2"></a>preproc_steps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Created from 356 samples and 13 variables
+
+Pre-processing:
+  - centered (13)
+  - ignored (0)
+  - scaled (13)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>boston_proc_train <span class="ot">&lt;-</span> <span class="fu">predict</span>(preproc_steps, boston_train)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>boston_proc_test <span class="ot">&lt;-</span> <span class="fu">predict</span>(preproc_steps, boston_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Can also perform imputation (e.g.&nbsp;<code>knnImpute</code>, <code>bagImpute</code>), as well as <code>pca</code>/<code>ica</code>, <code>nzv</code> and non-linear transforms <code>BoxCox</code>, <code>YeoJohnson</code>, etc.</p>
+<p>Why you should not <code>preProcess(boston, ...)</code>?</p>
+</section>
+<section id="train" class="slide level2" data-background-image="img/mireo-plus-b.png" data-background-size="200px" data-background-position="top 10px right 10px">
+<h2>Train</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-8_76259e28a371b2c20d77dd48c4038f70">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>tc <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"repeatedcv"</span>, </span>
+<span id="cb9-3"><a href="#cb9-3"></a>                   <span class="at">number =</span> <span class="dv">10</span>, <span class="at">repeats =</span> <span class="dv">10</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a>gbm_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(medv <span class="sc">~</span> ., <span class="at">data =</span> boston_proc_train, </span>
+<span id="cb9-5"><a href="#cb9-5"></a>                 <span class="at">method =</span> <span class="st">"gbm"</span>, <span class="at">trControl =</span> tc, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span>
+<span id="cb9-6"><a href="#cb9-6"></a>gbm_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stochastic Gradient Boosting 
+
+356 samples
+ 12 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+Summary of sample sizes: 320, 321, 322, 320, 321, 320, ... 
+Resampling results across tuning parameters:
+
+  interaction.depth  n.trees  RMSE       Rsquared   MAE      
+  1                   50      0.4539947  0.7898859  0.3140605
+  1                  100      0.4253064  0.8106993  0.2935521
+  1                  150      0.4166116  0.8189453  0.2885573
+  2                   50      0.4123146  0.8230713  0.2844296
+  2                  100      0.3895082  0.8409736  0.2706038
+  2                  150      0.3803161  0.8490129  0.2663978
+  3                   50      0.3950314  0.8369821  0.2715722
+  3                  100      0.3726304  0.8545770  0.2587302
+  3                  150      0.3636345  0.8622549  0.2554157
+
+Tuning parameter 'shrinkage' was held constant at a value of 0.1
+Tuning parameter 'n.minobsinnode' was held constant
+ at a value of 10
+RMSE was used to select the optimal model using the smallest value.
+The final values used for the model were n.trees = 150, interaction.depth = 3, shrinkage = 0.1 and n.minobsinnode = 10.</code></pre>
+</div>
+</div>
+<p><code>trainControl()</code> is the main workhorse for cross-validation (and tuning). It creates grids for you and performs adaptive search to minimize the computational cost.</p>
+</section>
+<section id="tuning" class="slide level2">
+<h2>Tuning</h2>
+<p>You can manually perform the tuning of hyperparameters overriding the default grids <code>trainControl()</code> creates for you.</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-9_a4451860b5eed6a86c69bed316d4c078">
+<div class="sourceCode cell-code" id="cb11" data-code-line-numbers="1-4,8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>gbm_grid <span class="ot">&lt;-</span>  <span class="fu">expand.grid</span>(<span class="at">interaction.depth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">9</span>), </span>
+<span id="cb11-2"><a href="#cb11-2"></a>                        <span class="at">n.trees =</span> (<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">50</span>, </span>
+<span id="cb11-3"><a href="#cb11-3"></a>                        <span class="at">shrinkage =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>),</span>
+<span id="cb11-4"><a href="#cb11-4"></a>                        <span class="at">n.minobsinnode =</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">20</span>))</span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">nrow</span>(gbm_grid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 54</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13" data-code-line-numbers="1-4,8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>gbm_fit_tuned <span class="ot">&lt;-</span> <span class="fu">train</span>(medv <span class="sc">~</span> ., <span class="at">data =</span> boston_proc_train, </span>
+<span id="cb13-2"><a href="#cb13-2"></a>                 <span class="at">method =</span> <span class="st">"gbm"</span>, <span class="at">trControl =</span> tc, <span class="at">verbose=</span><span class="cn">FALSE</span>, </span>
+<span id="cb13-3"><a href="#cb13-3"></a>                 <span class="at">tuneGrid=</span>gbm_grid)</span>
+<span id="cb13-4"><a href="#cb13-4"></a>gbm_fit_tuned</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stochastic Gradient Boosting 
+
+356 samples
+ 12 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+Summary of sample sizes: 320, 320, 320, 320, 321, 321, ... 
+Resampling results across tuning parameters:
+
+  shrinkage  interaction.depth  n.minobsinnode  n.trees  RMSE       Rsquared   MAE      
+  0.1        1                  10               50      0.4570190  0.7920241  0.3170863
+  0.1        1                  10              100      0.4292733  0.8130271  0.2952967
+  0.1        1                  10              150      0.4185138  0.8221516  0.2896760
+  0.1        1                  20               50      0.4801508  0.7710848  0.3296117
+  0.1        1                  20              100      0.4552362  0.7901258  0.3126133
+  0.1        1                  20              150      0.4475288  0.7971568  0.3085887
+  0.1        5                  10               50      0.3774114  0.8558603  0.2598620
+  0.1        5                  10              100      0.3586280  0.8698706  0.2488435
+  0.1        5                  10              150      0.3530236  0.8743001  0.2471894
+  0.1        5                  20               50      0.4291829  0.8137281  0.2914289
+  0.1        5                  20              100      0.4055895  0.8330371  0.2801370
+  0.1        5                  20              150      0.3974958  0.8399539  0.2780558
+  0.1        9                  10               50      0.3703353  0.8596494  0.2499267
+  0.1        9                  10              100      0.3554966  0.8708583  0.2446527
+  0.1        9                  10              150      0.3499599  0.8750702  0.2444459
+  0.1        9                  20               50      0.4254119  0.8170942  0.2890846
+  0.1        9                  20              100      0.4079924  0.8311823  0.2812808
+  0.1        9                  20              150      0.3988880  0.8389970  0.2783244
+  0.2        1                  10               50      0.4332482  0.8101956  0.3001468
+  0.2        1                  10              100      0.4191745  0.8229897  0.2944498
+  0.2        1                  10              150      0.4146920  0.8269669  0.2944515
+  0.2        1                  20               50      0.4624986  0.7844358  0.3182666
+  0.2        1                  20              100      0.4528254  0.7936661  0.3145203
+  0.2        1                  20              150      0.4471099  0.7991055  0.3137016
+  0.2        5                  10               50      0.3725533  0.8596403  0.2603050
+  0.2        5                  10              100      0.3658036  0.8660857  0.2597914
+  0.2        5                  10              150      0.3672296  0.8656500  0.2624443
+  0.2        5                  20               50      0.4166088  0.8249074  0.2901481
+  0.2        5                  20              100      0.4057305  0.8352627  0.2871671
+  0.2        5                  20              150      0.4032890  0.8377661  0.2885071
+  0.2        9                  10               50      0.3687060  0.8629401  0.2566159
+  0.2        9                  10              100      0.3666536  0.8650538  0.2601301
+  0.2        9                  10              150      0.3669103  0.8652173  0.2621234
+  0.2        9                  20               50      0.4110325  0.8288678  0.2894632
+  0.2        9                  20              100      0.3994266  0.8397191  0.2870193
+  0.2        9                  20              150      0.3984494  0.8413134  0.2883171
+  0.3        1                  10               50      0.4265918  0.8162571  0.3001828
+  0.3        1                  10              100      0.4180720  0.8246033  0.2977236
+  0.3        1                  10              150      0.4164494  0.8259661  0.2993284
+  0.3        1                  20               50      0.4582224  0.7889827  0.3195430
+  0.3        1                  20              100      0.4491875  0.7978232  0.3179120
+  0.3        1                  20              150      0.4453258  0.8013104  0.3181259
+  0.3        5                  10               50      0.3832109  0.8532121  0.2744719
+  0.3        5                  10              100      0.3810754  0.8554531  0.2756060
+  0.3        5                  10              150      0.3833570  0.8540534  0.2783372
+  0.3        5                  20               50      0.4224557  0.8203428  0.3001696
+  0.3        5                  20              100      0.4164047  0.8267242  0.3020547
+  0.3        5                  20              150      0.4156130  0.8287723  0.3030371
+  0.3        9                  10               50      0.3832002  0.8518751  0.2726441
+  0.3        9                  10              100      0.3844557  0.8524790  0.2771106
+  0.3        9                  10              150      0.3865055  0.8512256  0.2792891
+  0.3        9                  20               50      0.4209287  0.8221709  0.3030387
+  0.3        9                  20              100      0.4141053  0.8297027  0.3027560
+  0.3        9                  20              150      0.4166066  0.8286794  0.3049680
+
+RMSE was used to select the optimal model using the smallest value.
+The final values used for the model were n.trees = 150, interaction.depth = 9, shrinkage = 0.1 and n.minobsinnode = 10.</code></pre>
+</div>
+</div>
+</section>
+<section id="visualization" class="slide level2">
+<h2>Visualization</h2>
+<p>Most objects are visualizable.</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-10_88b241733749f085ed43857d66bd1b53">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">plot</span>(gbm_fit_tuned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="CaretAndBeyondSlides_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<section id="visualization-1" class="slide level2">
+<h2>Visualization</h2>
+<p>Also in <code>ggplot</code></p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-11_cc6bf9e37240a3b3005d31791334fedd">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">ggplot</span>(gbm_fit_tuned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="CaretAndBeyondSlides_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
+<section id="occams-razor" class="slide level2">
+<h2>Occam’s razor</h2>
+<p>Tuning produces many alternative models. The best model is probably on plateau, and we could try to find a simpler model which is “about as good”. This will find the simplest model within 3 pct of the best one.</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-12_8a47a2623f83934e1bf680de2ccb78bc">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>also_good_mod <span class="ot">&lt;-</span> <span class="fu">tolerance</span>(gbm_fit_tuned<span class="sc">$</span>results, <span class="at">metric=</span><span class="st">"RMSE"</span>,</span>
+<span id="cb17-2"><a href="#cb17-2"></a>                       <span class="at">tol=</span><span class="dv">3</span>, <span class="at">maximize =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-3"><a href="#cb17-3"></a>gbm_fit_tuned<span class="sc">$</span>results[<span class="fu">which.min</span>(gbm_fit_tuned<span class="sc">$</span>results<span class="sc">$</span>RMSE),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   shrinkage interaction.depth n.minobsinnode n.trees      RMSE  Rsquared
+15       0.1                 9             10     150 0.3499599 0.8750702
+         MAE     RMSESD RsquaredSD      MAESD
+15 0.2444459 0.08563751 0.05817571 0.04037827</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>gbm_fit_tuned<span class="sc">$</span>results[also_good_mod,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  shrinkage interaction.depth n.minobsinnode n.trees     RMSE  Rsquared
+8       0.1                 5             10     100 0.358628 0.8698706
+        MAE     RMSESD RsquaredSD     MAESD
+8 0.2488435 0.08910584 0.06325679 0.0422828</code></pre>
+</div>
+</div>
+<p>You can, of course, identify this visually (using some sort of elbow plot).</p>
+</section>
+<section id="multiple-models" class="slide level2">
+<h2>Multiple models</h2>
+<p>Switching models has never been easier</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-13_02a18a6b91c0f66d6e2b282b86386bec">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>svm_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(medv <span class="sc">~</span> ., <span class="at">data =</span> boston_proc_train, </span>
+<span id="cb21-2"><a href="#cb21-2"></a>                 <span class="at">method =</span> <span class="st">"svmRadial"</span>, <span class="at">trControl =</span> tc, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span>
+<span id="cb21-3"><a href="#cb21-3"></a>rf_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(medv <span class="sc">~</span> ., <span class="at">data =</span> boston_proc_train, </span>
+<span id="cb21-4"><a href="#cb21-4"></a>                 <span class="at">method =</span> <span class="st">"rf"</span>, <span class="at">trControl =</span> tc, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Each algorithm would require a customized grid, but thankfully, <code>trainControl()</code> will do some tuning for you (3 values for each tunable parameter).</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-14_b79bfd9ba38a53722eec9588046e898b">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>res <span class="ot">&lt;-</span> <span class="fu">resamples</span>(<span class="fu">list</span>(<span class="at">GBM =</span> gbm_fit,</span>
+<span id="cb22-2"><a href="#cb22-2"></a>                      <span class="at">SVM =</span> svm_fit,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>                      <span class="at">RF =</span> rf_fit))</span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="fu">summary</span>(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+summary.resamples(object = res)
+
+Models: GBM, SVM, RF 
+Number of resamples: 100 
+
+MAE 
+         Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA's
+GBM 0.1596753 0.2294928 0.2536258 0.2554157 0.2772792 0.3823098    0
+SVM 0.1941852 0.2471878 0.2780476 0.2825368 0.3139017 0.4532184    0
+RF  0.1469884 0.2188436 0.2428722 0.2454496 0.2691248 0.4388493    0
+
+RMSE 
+         Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA's
+GBM 0.2119712 0.3052745 0.3463568 0.3636345 0.4033769 0.6899072    0
+SVM 0.2501915 0.3580981 0.4175420 0.4354080 0.4767103 0.7894043    0
+RF  0.1943300 0.2998365 0.3380906 0.3539211 0.3990887 0.8044251    0
+
+Rsquared 
+         Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA's
+GBM 0.5919561 0.8278442 0.8824322 0.8622549 0.9071705 0.9667030    0
+SVM 0.4703106 0.7850482 0.8426367 0.8156808 0.8807625 0.9344111    0
+RF  0.5950725 0.8605203 0.8870178 0.8792928 0.9068011 0.9690597    0</code></pre>
+</div>
+</div>
+</section>
+<section id="variable-importance" class="slide level2">
+<h2>Variable importance</h2>
+<p>Variable importance mean different things for different algorithms. <code>caret</code> has unified interface for variable importance</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-15_4e6be5c7644d1cff9f16db92c8cd26ec">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">varImp</span>(rf_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rf variable importance
+
+          Overall
+rm      100.00000
+lstat    76.23957
+nox      14.04357
+dis      13.98319
+crim     12.55759
+indus     7.54353
+ptratio   7.07155
+age       3.65865
+black     2.38567
+rad       0.54808
+chas      0.02715
+zn        0.00000</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-16_8cdb766457395f3fe8e16a8f9da7feb7">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">varImp</span>(svm_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>loess r-squared variable importance
+
+        Overall
+lstat    100.00
+rm        90.44
+indus     31.25
+ptratio   30.87
+nox       27.71
+crim      27.31
+black     21.92
+age       17.36
+rad       16.87
+zn        14.52
+dis       11.59
+chas       0.00</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="prediction" class="slide level2">
+<h2>Prediction</h2>
+<p>Prediction is also easy. Select a model and call</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-17_7282792d4feb38bc5bbd60b6dacb5b7f">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>rf_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(rf_fit, <span class="at">newdata=</span>boston_proc_test)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>svm_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(svm_fit, <span class="at">newdata=</span>boston_proc_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Performance measurement varies between regression and classification. Wide selection of custom metrics are available (and you can add your own).</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-18_8672ecb9f18fef1bf54842f383a0ea69">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">postResample</span>(<span class="at">pred =</span> rf_preds, <span class="at">obs =</span> boston_proc_test<span class="sc">$</span>medv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     RMSE  Rsquared       MAE 
+0.3316805 0.8816282 0.2274026 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">postResample</span>(<span class="at">pred =</span> svm_preds, <span class="at">obs =</span> boston_proc_test<span class="sc">$</span>medv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     RMSE  Rsquared       MAE 
+0.3799208 0.8437500 0.2277842 </code></pre>
+</div>
+</div>
+</section>
+<section id="classification-example" class="slide level2">
+<h2>Classification example</h2>
+<p>Let’s predict whether the house is located on Charles river.</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-19_39e78bdb16ce059e4c104b5c294deb34">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb33-2"><a href="#cb33-2"></a>boston<span class="sc">$</span>chas <span class="ot">&lt;-</span> <span class="fu">factor</span>(boston<span class="sc">$</span>chas, <span class="at">levels=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"NotRiverside"</span>, <span class="st">"Riverside"</span>))</span>
+<span id="cb33-3"><a href="#cb33-3"></a>ctrain_idx <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(boston<span class="sc">$</span>chas, <span class="at">p=</span><span class="fl">0.7</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb33-4"><a href="#cb33-4"></a>boston_ctrain <span class="ot">&lt;-</span> boston[ctrain_idx,]</span>
+<span id="cb33-5"><a href="#cb33-5"></a>boston_ctest <span class="ot">&lt;-</span> boston[<span class="sc">-</span>ctrain_idx,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We need to do something about class imbalance.</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-20_ce2404fbcae5079417164d5a8f20180f">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">table</span>(boston<span class="sc">$</span>chas) <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+NotRiverside    Riverside 
+  0.93083004   0.06916996 </code></pre>
+</div>
+</div>
+<p>This means that we can expect our classifier to be at least this good by predicting no riverside houses.</p>
+<div class="callout callout-caution callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Danger</strong></p>
+</div>
+<div class="callout-content">
+<p>Class imbalance is one of the first thing you want to look at because it will influence how you want to look at the results and how you want to preprocess your data.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="train-with-preprocessing" class="slide level2">
+<h2>Train with preprocessing</h2>
+<p>We create a trainControl which is slightly customized for classification</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-21_c08802e482177ab26c53b83177fa0b43">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb36-2"><a href="#cb36-2"></a>ctr <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">"repeatedcv"</span>, <span class="at">repeats=</span><span class="dv">5</span>,</span>
+<span id="cb36-3"><a href="#cb36-3"></a>                    <span class="at">summaryFunction =</span> twoClassSummary,</span>
+<span id="cb36-4"><a href="#cb36-4"></a>                    <span class="at">classProbs =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-5"><a href="#cb36-5"></a>cfit_rf <span class="ot">&lt;-</span> <span class="fu">train</span>(chas <span class="sc">~</span> ., <span class="at">data =</span> boston_ctrain, </span>
+<span id="cb36-6"><a href="#cb36-6"></a>                <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">"scale"</span>, <span class="st">"center"</span>), <span class="at">metric=</span><span class="st">"ROC"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7"></a>                <span class="at">method =</span> <span class="st">"rf"</span>, <span class="at">trControl =</span> ctr, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can downsample the dominant class (non-riverside housing) and refit the model (setting <code>sampling="down"</code>) or upsample the minority class (<code>sampling="up"</code>) or do some combination of the two (<code>smote</code> or <code>rose</code>). But at the end of the day the problem is unlikely to go away.</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-22_10afb02d5b43baf422602ca9c928d2be">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>ctr<span class="sc">$</span>sampling <span class="ot">&lt;-</span> <span class="st">"down"</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a>cfit_rf_down <span class="ot">&lt;-</span> <span class="fu">train</span>(chas <span class="sc">~</span> ., <span class="at">data =</span> boston_ctrain, </span>
+<span id="cb37-3"><a href="#cb37-3"></a>                <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">"scale"</span>, <span class="st">"center"</span>), <span class="at">metric=</span><span class="st">"ROC"</span>,</span>
+<span id="cb37-4"><a href="#cb37-4"></a>                <span class="at">method =</span> <span class="st">"rf"</span>, <span class="at">trControl =</span> ctr, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span>
+<span id="cb37-5"><a href="#cb37-5"></a>ctr<span class="sc">$</span>sampling <span class="ot">&lt;-</span> <span class="st">"rose"</span></span>
+<span id="cb37-6"><a href="#cb37-6"></a>cfit_rf_rose <span class="ot">&lt;-</span> <span class="fu">train</span>(chas <span class="sc">~</span> ., <span class="at">data =</span> boston_ctrain, </span>
+<span id="cb37-7"><a href="#cb37-7"></a>                <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">"scale"</span>, <span class="st">"center"</span>), <span class="at">metric=</span><span class="st">"ROC"</span>,</span>
+<span id="cb37-8"><a href="#cb37-8"></a>                <span class="at">method =</span> <span class="st">"rf"</span>, <span class="at">trControl =</span> ctr, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="class-imbalance" class="slide level2">
+<h2>Class imbalance</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-23_349b4c2a20bcf6dd0d26f49b491859ed">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>cfit_rf_models <span class="ot">&lt;-</span> <span class="fu">resamples</span>(<span class="fu">list</span>(</span>
+<span id="cb38-2"><a href="#cb38-2"></a>  <span class="at">original=</span>cfit_rf,</span>
+<span id="cb38-3"><a href="#cb38-3"></a>  <span class="at">down=</span>cfit_rf_down,</span>
+<span id="cb38-4"><a href="#cb38-4"></a>  <span class="at">rose=</span>cfit_rf_rose))</span>
+<span id="cb38-5"><a href="#cb38-5"></a><span class="fu">summary</span>(cfit_rf_models)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+summary.resamples(object = cfit_rf_models)
+
+Models: original, down, rose 
+Number of resamples: 50 
+
+ROC 
+              Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA's
+original 0.5909091 0.8371212 0.9141414 0.8817172 0.9393939 1.0000000    0
+down     0.3409091 0.7171717 0.8207071 0.7900000 0.8787879 0.9545455    0
+rose     0.1818182 0.5833333 0.7222222 0.7013131 0.8030303 1.0000000    0
+
+Sens 
+              Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA's
+original 0.8787879 0.9696970 0.9696970 0.9769697 1.0000000 1.0000000    0
+down     0.4242424 0.6060606 0.6666667 0.6787879 0.7575758 0.8787879    0
+rose     0.3030303 0.4242424 0.4848485 0.4963636 0.5757576 0.7272727    0
+
+Spec 
+         Min.   1st Qu. Median       Mean 3rd Qu. Max. NA's
+original    0 0.0000000      0 0.07666667       0  0.5    0
+down        0 0.6666667      1 0.79333333       1  1.0    0
+rose        0 0.6666667      1 0.81000000       1  1.0    0</code></pre>
+</div>
+</div>
+</section>
+<section id="class-imbalance-1" class="slide level2">
+<h2>Class imbalance</h2>
+<p>Does it even mean anything?</p>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-24_f0b2fc399c32c24f0e165d51bfb2c2d8">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>preds_rf <span class="ot">&lt;-</span> <span class="fu">predict</span>(cfit_rf, <span class="at">newdata=</span>boston_ctest)</span>
+<span id="cb40-2"><a href="#cb40-2"></a><span class="fu">confusionMatrix</span>(<span class="at">data=</span>preds_rf, <span class="at">reference=</span>boston_ctest<span class="sc">$</span>chas)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+              Reference
+Prediction     NotRiverside Riverside
+  NotRiverside          138         7
+  Riverside               3         3
+                                          
+               Accuracy : 0.9338          
+                 95% CI : (0.8816, 0.9678)
+    No Information Rate : 0.9338          
+    P-Value [Acc &gt; NIR] : 0.5831          
+                                          
+                  Kappa : 0.3423          
+                                          
+ Mcnemar's Test P-Value : 0.3428          
+                                          
+            Sensitivity : 0.9787          
+            Specificity : 0.3000          
+         Pos Pred Value : 0.9517          
+         Neg Pred Value : 0.5000          
+             Prevalence : 0.9338          
+         Detection Rate : 0.9139          
+   Detection Prevalence : 0.9603          
+      Balanced Accuracy : 0.6394          
+                                          
+       'Positive' Class : NotRiverside    
+                                          </code></pre>
+</div>
+</div>
+</section>
+<section id="class-imbalance-2" class="slide level2">
+<h2>Class imbalance</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-25_35c08eb204c179afb7102a277fdf25ef">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>probs_rf <span class="ot">&lt;-</span> <span class="fu">predict</span>(cfit_rf, <span class="at">newdata=</span>boston_ctest, <span class="at">type=</span><span class="st">"prob"</span>)</span>
+<span id="cb42-2"><a href="#cb42-2"></a>pROC<span class="sc">::</span><span class="fu">roc</span>(boston_ctest<span class="sc">$</span>chas,probs_rf<span class="sc">$</span>Riverside, <span class="at">levels=</span><span class="fu">levels</span>(boston_ctest<span class="sc">$</span>chas)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+roc.default(response = boston_ctest$chas, predictor = probs_rf$Riverside,     levels = levels(boston_ctest$chas))
+
+Data: probs_rf$Riverside in 141 controls (boston_ctest$chas NotRiverside) &lt; 10 cases (boston_ctest$chas Riverside).
+Area under the curve: 0.9053</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>probs_rf_down <span class="ot">&lt;-</span> <span class="fu">predict</span>(cfit_rf_down, <span class="at">newdata=</span>boston_ctest, <span class="at">type=</span><span class="st">"prob"</span>)</span>
+<span id="cb44-2"><a href="#cb44-2"></a>pROC<span class="sc">::</span><span class="fu">roc</span>(boston_ctest<span class="sc">$</span>chas,probs_rf_down<span class="sc">$</span>Riverside, <span class="at">levels=</span><span class="fu">levels</span>(boston_ctest<span class="sc">$</span>chas))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+roc.default(response = boston_ctest$chas, predictor = probs_rf_down$Riverside,     levels = levels(boston_ctest$chas))
+
+Data: probs_rf_down$Riverside in 141 controls (boston_ctest$chas NotRiverside) &lt; 10 cases (boston_ctest$chas Riverside).
+Area under the curve: 0.8181</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>probs_rf_rose <span class="ot">&lt;-</span> <span class="fu">predict</span>(cfit_rf_rose, <span class="at">newdata=</span>boston_ctest, <span class="at">type=</span><span class="st">"prob"</span>)</span>
+<span id="cb46-2"><a href="#cb46-2"></a>pROC<span class="sc">::</span><span class="fu">roc</span>(boston_ctest<span class="sc">$</span>chas,probs_rf_rose<span class="sc">$</span>Riverside, <span class="at">levels=</span><span class="fu">levels</span>(boston_ctest<span class="sc">$</span>chas))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+roc.default(response = boston_ctest$chas, predictor = probs_rf_rose$Riverside,     levels = levels(boston_ctest$chas))
+
+Data: probs_rf_rose$Riverside in 141 controls (boston_ctest$chas NotRiverside) &lt; 10 cases (boston_ctest$chas Riverside).
+Area under the curve: 0.833</code></pre>
+</div>
+</div>
+</section>
+<section id="class-imbalance-3" class="slide level2">
+<h2>Class imbalance</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-26_d5f45a2abf686ff07cdf57d23f95ba55">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>rf_roc <span class="ot">&lt;-</span> pROC<span class="sc">::</span><span class="fu">roc</span>(boston_ctest<span class="sc">$</span>chas,probs_rf<span class="sc">$</span>Riverside, <span class="at">levels=</span><span class="fu">levels</span>(boston_ctest<span class="sc">$</span>chas))</span>
+<span id="cb48-2"><a href="#cb48-2"></a>best_th <span class="ot">&lt;-</span> pROC<span class="sc">::</span><span class="fu">coords</span>(rf_roc, <span class="st">"best"</span>)<span class="sc">$</span>threshold</span>
+<span id="cb48-3"><a href="#cb48-3"></a><span class="fu">plot</span>(rf_roc, </span>
+<span id="cb48-4"><a href="#cb48-4"></a>     <span class="at">print.thres=</span><span class="fu">c</span>(<span class="fl">0.5</span>, best_th))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="CaretAndBeyondSlides_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
+<section id="class-imbalance-4" class="slide level2">
+<h2>Class imbalance</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-27_f2b5a4c2b723b1a763ce627926c8f7bc">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>rf_roc_rose <span class="ot">&lt;-</span> pROC<span class="sc">::</span><span class="fu">roc</span>(boston_ctest<span class="sc">$</span>chas,probs_rf_rose<span class="sc">$</span>Riverside, <span class="at">levels=</span><span class="fu">levels</span>(boston_ctest<span class="sc">$</span>chas))</span>
+<span id="cb49-2"><a href="#cb49-2"></a><span class="fu">list</span>(<span class="st">"RF"</span><span class="ot">=</span>rf_roc, <span class="st">"ROSE"</span><span class="ot">=</span>rf_roc_rose) <span class="sc">%&gt;%</span> pROC<span class="sc">::</span><span class="fu">ggroc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="CaretAndBeyondSlides_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
+<section id="more-models" class="slide level2">
+<h2>More models</h2>
+<p>A ton of available models. Documentation at <code>{caret}</code> <a href="https://topepo.github.io/caret/available-models.html">website</a>. Models are organized by task and clustered by tag.</p>
+<p>Switching the model is as easy as swapping <code>method="__"</code> in <code>train()</code> (unless you do manual grid search). A lot can be done with model combination (stacking), but you want to be careful with folding to avoid leakage. <code>{caret}</code> allows you to craft the CV indices manually.</p>
+<h3 id="way-forward">Way forward</h3>
+<ul>
+<li>Multiple models has been first introduced in R4DS (“R for Data Science”) book. Neat idea based on list-columns and extensive use of <code>purrr::map()</code> to iterate over them. <code>{modelr}</code> package by Hadley.</li>
+<li>Max Kuhn was leaving Pfizer and the future of <code>caret</code> was dim. Rstudio snapped him to continue working on streamlining modeling interfaces in R.</li>
+</ul>
+</section>
+<section id="beyond-caret" class="slide level2">
+<h2>Beyond {caret}</h2>
+<ul>
+<li>First project was <code>rsample</code> which created a new type of data structure for repeated sampling - a list-column of indices (sort of unevaluated pointers to future data). “Conscious decoupling”. Caret is too big.</li>
+<li>Then came
+<ul>
+<li><code>recipes</code> - further development of unevaluated promises for pre-processing</li>
+<li><code>parsnip</code> - rethinking of <code>caret</code> for tidyverse</li>
+<li><code>dials</code> - tuning functions</li>
+<li><code>yardstick</code> - helper functions for measuring performance</li>
+<li><code>baguette</code> - generalized framework for bagging</li>
+<li><code>stacks</code> - generalized framework for stacking</li>
+<li><code>workflow</code> - ML workflow automation (inspired by sci-kit learn).</li>
+</ul></li>
+</ul>
+<p>More details in the new book <a href="https://www.tmwr.org/">Tidy Modeling with R</a> by Max Kuhn and Julia Silge</p>
+</section>
+<section id="tidymodels" class="slide level2">
+<h2>Tidymodels</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-28_6354ad312b315415810383f6714a3b0e">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">library</span>(tidymodels) <span class="co">#meta-package</span></span>
+<span id="cb50-2"><a href="#cb50-2"></a></span>
+<span id="cb50-3"><a href="#cb50-3"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb50-4"><a href="#cb50-4"></a>bh_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(boston, <span class="at">prop=</span><span class="fl">0.7</span>, <span class="at">strata=</span><span class="st">"medv"</span>)</span>
+<span id="cb50-5"><a href="#cb50-5"></a>bh_recipe <span class="ot">&lt;-</span> <span class="fu">training</span>(bh_split) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-6"><a href="#cb50-6"></a>  <span class="fu">recipe</span>(medv<span class="sc">~</span>.) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-7"><a href="#cb50-7"></a>  <span class="fu">step_dummy</span>(chas) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-8"><a href="#cb50-8"></a>  <span class="fu">step_corr</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-9"><a href="#cb50-9"></a>  <span class="fu">step_nzv</span>(<span class="fu">all_predictors</span>())</span>
+<span id="cb50-10"><a href="#cb50-10"></a>bh_recipe <span class="sc">%&gt;%</span> <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outcome:    1
+predictor: 12</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 352 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Dummy variables from: chas | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Correlation filter on: &lt;none&gt; | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Sparse, unbalanced variable filter removed: &lt;none&gt; | Trained</code></pre>
+</div>
+</div>
+</section>
+<section id="tidymodels-1" class="slide level2">
+<h2>Tidymodels</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-29_4bd9538eada975b61190a86b594ef4ec">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a>bh_lm <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>(<span class="at">mode =</span> <span class="st">"regression"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb65-2"><a href="#cb65-2"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
+<span id="cb65-3"><a href="#cb65-3"></a></span>
+<span id="cb65-4"><a href="#cb65-4"></a>bh_lm_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb65-5"><a href="#cb65-5"></a>  <span class="fu">add_recipe</span>(bh_recipe) <span class="sc">%&gt;%</span></span>
+<span id="cb65-6"><a href="#cb65-6"></a>  <span class="fu">add_model</span>(bh_lm)</span>
+<span id="cb65-7"><a href="#cb65-7"></a></span>
+<span id="cb65-8"><a href="#cb65-8"></a>bh_rt <span class="ot">&lt;-</span> <span class="fu">decision_tree</span>(<span class="at">mode =</span> <span class="st">"regression"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb65-9"><a href="#cb65-9"></a>  <span class="fu">set_engine</span>(<span class="st">"rpart"</span>)</span>
+<span id="cb65-10"><a href="#cb65-10"></a></span>
+<span id="cb65-11"><a href="#cb65-11"></a>bh_rt_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb65-12"><a href="#cb65-12"></a>  <span class="fu">add_recipe</span>(bh_recipe) <span class="sc">%&gt;%</span></span>
+<span id="cb65-13"><a href="#cb65-13"></a>  <span class="fu">add_model</span>(bh_rt)</span>
+<span id="cb65-14"><a href="#cb65-14"></a></span>
+<span id="cb65-15"><a href="#cb65-15"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb65-16"><a href="#cb65-16"></a>bh_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(<span class="fu">training</span>(bh_split), <span class="at">strata =</span> <span class="st">"medv"</span>, <span class="at">v =</span> <span class="dv">3</span>, <span class="at">repeats =</span> <span class="dv">3</span>)</span>
+<span id="cb65-17"><a href="#cb65-17"></a>metrics_regression <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(rmse, mae, rsq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="tidymodels-2" class="slide level2">
+<h2>Tidymodels</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-30_9a94505b97d9b27cbaf626a684278843">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb66-2"><a href="#cb66-2"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(bh_lm_wf, bh_folds, <span class="at">metrics =</span> metrics_regression) <span class="sc">%&gt;%</span></span>
+<span id="cb66-3"><a href="#cb66-3"></a>  <span class="fu">collect_metrics</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb66-4"><a href="#cb66-4"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"lm"</span>)</span>
+<span id="cb66-5"><a href="#cb66-5"></a></span>
+<span id="cb66-6"><a href="#cb66-6"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb66-7"><a href="#cb66-7"></a>rt_fit <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(bh_rt_wf, bh_folds, <span class="at">metrics =</span> metrics_regression) <span class="sc">%&gt;%</span></span>
+<span id="cb66-8"><a href="#cb66-8"></a>  <span class="fu">collect_metrics</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb66-9"><a href="#cb66-9"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"rt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell columns column-output-location" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-31_5c1994f5d554cf9aef4d7bad3c17cfb2">
+<div class="column">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="fu">bind_rows</span>(lm_fit, rt_fit) <span class="sc">%&gt;%</span></span>
+<span id="cb67-2"><a href="#cb67-2"></a>  <span class="fu">select</span>(.metric, mean, std_err, model) <span class="sc">%&gt;%</span></span>
+<span id="cb67-3"><a href="#cb67-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> model, <span class="at">y =</span> mean, </span>
+<span id="cb67-4"><a href="#cb67-4"></a>             <span class="at">ymin =</span> mean <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>std_err, </span>
+<span id="cb67-5"><a href="#cb67-5"></a>             <span class="at">ymax =</span> mean <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>std_err)) <span class="sc">+</span></span>
+<span id="cb67-6"><a href="#cb67-6"></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span> </span>
+<span id="cb67-7"><a href="#cb67-7"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"confidence interval"</span>) <span class="sc">+</span></span>
+<span id="cb67-8"><a href="#cb67-8"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> .metric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="CaretAndBeyondSlides_files/figure-revealjs/unnamed-chunk-31-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="tidymodels-3" class="slide level2">
+<h2>Tidymodels</h2>
+<div class="cell" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-32_ecc65cbf3a9bb5b48487642395acfc7c">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>fitted_model <span class="ot">&lt;-</span> bh_lm_wf <span class="sc">%&gt;%</span></span>
+<span id="cb68-2"><a href="#cb68-2"></a>  <span class="fu">fit</span>(<span class="fu">training</span>(bh_split))</span>
+<span id="cb68-3"><a href="#cb68-3"></a>predict_test <span class="ot">&lt;-</span> fitted_model <span class="sc">%&gt;%</span></span>
+<span id="cb68-4"><a href="#cb68-4"></a>  <span class="fu">predict</span>(<span class="fu">testing</span>(bh_split)) <span class="sc">%&gt;%</span></span>
+<span id="cb68-5"><a href="#cb68-5"></a>  <span class="fu">bind_cols</span>(<span class="fu">testing</span>(bh_split)) </span>
+<span id="cb68-6"><a href="#cb68-6"></a></span>
+<span id="cb68-7"><a href="#cb68-7"></a>predict_test <span class="sc">%&gt;%</span></span>
+<span id="cb68-8"><a href="#cb68-8"></a>  <span class="fu">metrics_regression</span>(<span class="at">truth =</span> medv, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard       4.46 
+2 mae     standard       3.13 
+3 rsq     standard       0.742</code></pre>
+</div>
+</div>
+<div class="cell columns column-output-location" data-hash="CaretAndBeyondSlides_cache/revealjs/unnamed-chunk-33_fecae4aaa3b9ff921b947171afd7f84e">
+<div class="column">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="fu">bind_rows</span>(predict_test) <span class="sc">%&gt;%</span></span>
+<span id="cb70-2"><a href="#cb70-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(medv, .pred)) <span class="sc">+</span></span>
+<span id="cb70-3"><a href="#cb70-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb70-4"><a href="#cb70-4"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, </span>
+<span id="cb70-5"><a href="#cb70-5"></a>        <span class="at">size =</span> <span class="fl">0.3</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="CaretAndBeyondSlides_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="thank-you" class="title-slide slide level1 center">
+<h1>Thank you!</h1>
+<div class="footer footer-default">
+
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="CaretAndBeyondSlides_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    });
+    </script>
+    
+
+</body></html>
